@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            transition: all 1s;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        setInterval(async () => {
+            try {
+                const res = await fetch('/light');
+                const data = await res.text();
+                document.body.style.backgroundColor = data;
+            } catch (error) {
+                console.log(error);
+            }
+        }, 1000)
+    </script>
+</body>
+</html>
