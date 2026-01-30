@@ -1,0 +1,7 @@
+{
+    "serialPort": "/dev/ttyUSB0",
+    "baudRate": 115200,
+    "pins": {
+        "D2": { "description": "继电器" }
+    }
+}

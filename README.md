@@ -11,6 +11,7 @@ MCP的垃圾文档是真的难啃 最后还是把库代码喂给ds才写出来
 ### 目前有什么工具?
 - 高级bash工具套件 `advanced_bash.js`(`Linux only`)
 - 数学计算器 `calculate.js`
+- GPIO工具套件 `gpio.js`(**BETA** `需要硬件`)
 - 系统音量调节 `sysVolume.js`(`Linux only` 支持`pulse`/`alsa`)
 - 获取时间 `time.js`
 
@@ -41,7 +42,7 @@ git clone https://github.com/Hello-World2333/mcp.git
 ### 3. 禁用不兼容的工具
 
 如果你是`Windows`用户 需要禁用`Linux only`工具  
-打开`tools/`文件夹 将不兼容的工具重命名 名字前面加个点即可
+打开`tools/`文件夹 将不兼容或不想用的工具重命名 名字前面加个点即可
 
 ### 4. 启动项目
 
