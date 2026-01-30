@@ -10,7 +10,7 @@ MCP的垃圾文档是真的难啃 最后还是把库代码喂给ds才写出来
 ### 目前有什么工具?
 - 高级bash工具套件(`Linux only`)
 - 数学计算器
-- 系统音量调节(`Linux only` 支持`pluse`/`alsa`)
+- 系统音量调节(`Linux only` 支持`pulse`/`alsa`)
 - 获取时间
 
 ## 使用方法
