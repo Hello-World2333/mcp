@@ -5,13 +5,14 @@
 这是一个由莫名其妙的库和代码拼出来的MCP服务端  
 基于`node.js` 很多功能是`Linux only`的  
 MCP的垃圾文档是真的难啃 最后还是把库代码喂给ds才写出来  
-本项目一开始甚至没用git
+本项目一开始甚至没用git  
+**文件名以.开头的工具将被禁用**
 
 ### 目前有什么工具?
-- 高级bash工具套件(`Linux only`)
-- 数学计算器
-- 系统音量调节(`Linux only` 支持`pulse`/`alsa`)
-- 获取时间
+- 高级bash工具套件 `advanced_bash.js`(`Linux only`)
+- 数学计算器 `calculate.js`
+- 系统音量调节 `sysVolume.js`(`Linux only` 支持`pulse`/`alsa`)
+- 获取时间 `time.js`
 
 ## 使用方法
 
@@ -37,7 +38,12 @@ git clone https://github.com/Hello-World2333/mcp.git
 如果没有 则需要下载项目压缩包并解压  
 然后进入项目目录
 
-### 3. 启动项目
+### 3. 禁用不兼容的工具
+
+如果你是`Windows`用户 需要禁用`Linux only`工具  
+打开`tools/`文件夹 将不兼容的工具重命名 名字前面加个点即可
+
+### 4. 启动项目
 
 第一次启动需要安装依赖:
 ```bash
@@ -50,7 +56,7 @@ npm start
 ```
 如果看到"启动成功!" 就启动成功了
 
-### 4. 配置客户端
+### 5. 配置客户端
 
 服务端默认在`http://0.0.0.0:3001/mcp`运行  
 
