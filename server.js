@@ -29,6 +29,44 @@ function convertToTools(definitions, handlers) {
     }));
 }
 
+// 递归处理 Zod schema 的辅助函数
+function createZodSchemaFromProp(prop) {
+    if (prop.type === 'string') {
+        let schema = z.string();
+        if (prop.minLength !== undefined) schema = schema.min(prop.minLength);
+        if (prop.maxLength !== undefined) schema = schema.max(prop.maxLength);
+        if (prop.pattern !== undefined) schema = schema.regex(new RegExp(prop.pattern));
+        return schema;
+    } else if (prop.type === 'number' || prop.type === 'integer') {
+        let schema = z.number();
+        if (prop.minimum !== undefined) schema = schema.min(prop.minimum);
+        if (prop.maximum !== undefined) schema = schema.max(prop.maximum);
+        if (prop.exclusiveMinimum !== undefined) schema = schema.gt(prop.exclusiveMinimum);
+        if (prop.exclusiveMaximum !== undefined) schema = schema.lt(prop.exclusiveMaximum);
+        return schema;
+    } else if (prop.type === 'boolean') {
+        return z.boolean();
+    } else if (prop.type === 'array') {
+        let itemsSchema = z.any();
+        if (prop.items) {
+            itemsSchema = createZodSchemaFromProp(prop.items);
+        }
+        return z.array(itemsSchema);
+    } else if (prop.type === 'object') {
+        if (prop.properties) {
+            const objectShape = {};
+            for (const [key, value] of Object.entries(prop.properties)) {
+                objectShape[key] = createZodSchemaFromProp(value);
+            }
+            return z.object(objectShape);
+        } else {
+            return z.object({});
+        }
+    } else {
+        return z.any();
+    }
+}
+
 // 自动导入tools目录下的所有工具
 async function loadTools() {
     const toolsDir = path.join(process.cwd(), 'tools');
@@ -59,32 +97,7 @@ async function loadTools() {
                             processedInputSchema = z.object(
                                 Object.keys(processedInputSchema.properties || {}).reduce((acc, key) => {
                                     let prop = processedInputSchema.properties[key];
-                                    let schema;
-                                    
-                                    if (prop.type === 'string') {
-                                        schema = z.string();
-                                        if (prop.minLength !== undefined) schema = schema.min(prop.minLength);
-                                        if (prop.maxLength !== undefined) schema = schema.max(prop.maxLength);
-                                    } else if (prop.type === 'number' || prop.type === 'integer') {
-                                        schema = z.number();
-                                        if (prop.minimum !== undefined) schema = schema.min(prop.minimum);
-                                        if (prop.maximum !== undefined) schema = schema.max(prop.maximum);
-                                    } else if (prop.type === 'boolean') {
-                                        schema = z.boolean();
-                                    } else if (prop.type === 'array') {
-                                        schema = z.array(z.any());
-                                        if (prop.items) {
-                                            if (prop.items.type === 'string') {
-                                                schema = z.array(z.string());
-                                            } else if (prop.items.type === 'number') {
-                                                schema = z.array(z.number());
-                                            }
-                                        }
-                                    } else if (prop.type === 'object') {
-                                        schema = z.object({});
-                                    } else {
-                                        schema = z.any();
-                                    }
+                                    let schema = createZodSchemaFromProp(prop);
                                     
                                     if (!processedInputSchema.required?.includes(key)) {
                                         schema = schema.optional();
